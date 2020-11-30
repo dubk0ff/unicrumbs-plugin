@@ -1,0 +1,36 @@
+function onEnd()
+{
+    /* Array of UniCrumbs parameters */
+    $this['{{ parameters_name }}'] = [
+        // Crumb ID
+        'id' => {{ id }},
+        // Dynamic titles and parameters of cms pages
+        'titles' => [
+{% for id, item in titles %}
+{% if item is iterable %}
+            {{ id }} => [
+{% for param in item %}
+                '{{ param }}',
+{% endfor %}
+            ],
+{% else %}
+            {{ id }} => '{{ item }}',
+{% endif %}
+{% endfor %}
+        ],
+        // Dynamic slugs and GET queries of cms pages
+        'slugs' => [
+{% for id, items in slugs %}
+            {{ id }} => [
+{% for key, slug in items %}
+                '{{ key }}' => '{{ slug }}',
+{% endfor %}
+                // Additional GET parameters
+                'queries' => []
+            ],
+{% endfor %}
+        ],
+        // IDs of crumbs to hide
+        'invisible' => []
+    ];
+}

@@ -1,0 +1,11 @@
+# ===================================
+# Filter Scope Definitions
+# ===================================
+
+scopes:
+    active:
+        label: dubk0ff.unicrumbs::controllers.templates.config_filter.show_actived
+        type: switch
+        conditions:
+            - is_active is not true
+            - is_active is true

@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: dubk0ff.unicrumbs::controllers.templates.config_form.name
+
+# Model Form Field configuration
+form: $/dubk0ff/unicrumbs/models/template/fields.yaml
+
+# Model Class name
+modelClass: Dubk0ff\UniCrumbs\Models\Template
+
+# Default redirect location
+defaultRedirect: dubk0ff/unicrumbs/templates
+
+# Create page
+create:
+    title: dubk0ff.unicrumbs::controllers.templates.config_form.create_title
+    redirect: dubk0ff/unicrumbs/templates/update/:id
+    redirectClose: dubk0ff/unicrumbs/templates
+
+# Update page
+update:
+    title: dubk0ff.unicrumbs::controllers.templates.config_form.update_title
+    redirect: dubk0ff/unicrumbs/templates
+    redirectClose: dubk0ff/unicrumbs/templates
+
+# Preview page
+preview:
+    title: dubk0ff.unicrumbs::controllers.templates.config_form.preview_title

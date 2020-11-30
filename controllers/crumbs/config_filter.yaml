@@ -1,0 +1,17 @@
+# ===================================
+# Filter Scope Definitions
+# ===================================
+
+scopes:
+    type:
+        label: dubk0ff.unicrumbs::controllers.crumbs.config_filter.type
+        modelClass: Dubk0ff\UniCrumbs\Models\Crumb
+        options: getTypeOptions
+        conditions: type in (:filtered)
+
+    deleted:
+        label: dubk0ff.unicrumbs::controllers.crumbs.config_filter.show_deleted
+        type: switch
+        conditions:
+            - deleted_at is null
+            - deleted_at is not null

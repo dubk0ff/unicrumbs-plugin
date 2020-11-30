@@ -1,0 +1,5 @@
+1.0.1:
+  - Init first version UniCrumbs plugin.
+  - Run table migrations.
+  - create_crumbs_table.php
+  - create_templates_table.php

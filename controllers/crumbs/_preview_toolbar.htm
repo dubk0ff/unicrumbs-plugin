@@ -1,0 +1,29 @@
+<a
+    href="<?= Backend::url('dubk0ff/unicrumbs/crumbs') ?>"
+    class="btn btn-default oc-icon-chevron-left">
+    <?= e(trans('dubk0ff.unicrumbs::controllers.crumbs.preview_toolbar.back_to_list')) ?>
+</a>
+<a
+    href="<?= Backend::url('dubk0ff/unicrumbs/crumbs/update/' . $formModel->id) ?>"
+    class="btn btn-primary oc-icon-pencil">
+    <?= e(trans('dubk0ff.unicrumbs::controllers.crumbs.preview_toolbar.update_data')) ?>
+</a>
+<?php if ($formModel->trashed()): ?>
+    <button
+        type="button"
+        data-request="onRestoreCrumb"
+        data-load-indicator="<?= e(trans('dubk0ff.unicrumbs::controllers.restore_indicator')) ?>"
+        class="btn btn-outline-success oc-icon-heartbeat"
+        data-request-confirm="<?= e(trans('dubk0ff.unicrumbs::controllers.restore_confirm')) ?>">
+        <?= e(trans('dubk0ff.unicrumbs::controllers.restore')) ?>
+    </button>
+<?php else: ?>
+    <button
+        type="button"
+        data-request="onDeleteCrumb"
+        data-load-indicator="<?= e(trans('dubk0ff.unicrumbs::controllers.delete_indicator')) ?>"
+        class="btn btn-outline-danger oc-icon-trash-o"
+        data-request-confirm="<?= e(trans('dubk0ff.unicrumbs::controllers.delete_confirm')) ?>">
+        <?= e(trans('dubk0ff.unicrumbs::controllers.delete')) ?>
+    </button>
+<?php endif ?>

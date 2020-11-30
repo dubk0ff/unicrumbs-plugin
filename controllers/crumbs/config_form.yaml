@@ -1,0 +1,30 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: dubk0ff.unicrumbs::controllers.crumbs.config_form.name
+
+# Model Form Field configuration
+form: $/dubk0ff/unicrumbs/models/crumb/fields.yaml
+
+# Model Class name
+modelClass: Dubk0ff\UniCrumbs\Models\Crumb
+
+# Default redirect location
+defaultRedirect: dubk0ff/unicrumbs/crumbs
+
+# Create page
+create:
+    title: dubk0ff.unicrumbs::controllers.crumbs.config_form.create_title
+    redirect: dubk0ff/unicrumbs/crumbs/update/:id
+    redirectClose: dubk0ff/unicrumbs/crumbs/preview/:id
+
+# Update page
+update:
+    title: dubk0ff.unicrumbs::controllers.crumbs.config_form.update_title
+    redirectClose: dubk0ff/unicrumbs/crumbs/preview/:id
+
+# Preview page
+preview:
+    title: dubk0ff.unicrumbs::controllers.crumbs.config_form.preview_title

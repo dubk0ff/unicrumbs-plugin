@@ -1,0 +1,12 @@
+# ===================================
+#  Reorder Behavior Config
+# ===================================
+
+# Reorder Title
+title: dubk0ff.unicrumbs::controllers.crumbs.config_reorder.title
+
+# Attribute name
+nameFrom: name
+
+# Model Class name
+modelClass: Dubk0ff\UniCrumbs\Models\Crumb

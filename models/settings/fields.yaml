@@ -1,0 +1,9 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    cache_expire:
+        label: dubk0ff.unicrumbs::models.settings.cache_expire
+        type: text
+        comment: dubk0ff.unicrumbs::models.settings.cache_expire_comment

@@ -1,0 +1,13 @@
+<div class="layout-row min-size">
+    <div class="callout fade in callout-info no-icon no-subheader">
+        <div class="content">
+            <?php foreach(trans('dubk0ff.unicrumbs::models.crumb.hint_information') as $key => $item): ?>
+                <?php if($key === 0): ?>
+                    <strong><?= $item ?></strong><br>
+                <?php else: ?>
+                    <?= $item ?><br>
+                <?php endif ?>
+            <?php endforeach ?>
+        </div>
+    </div>
+</div>

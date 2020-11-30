@@ -1,0 +1,34 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    id:
+        label: dubk0ff.unicrumbs::models.crumb.id
+        searchable: true
+
+    name:
+        label: dubk0ff.unicrumbs::models.crumb.name
+        type: text
+        searchable: true
+
+    parent:
+        label: dubk0ff.unicrumbs::models.crumb.parent
+        relation: parent
+        select: name
+
+    type:
+        label: dubk0ff.unicrumbs::models.crumb.type
+        type: crumb_type
+
+    deleted_at:
+        label: dubk0ff.unicrumbs::models.deleted_at
+        default: —
+        invisible: true
+
+    created_at:
+        label: dubk0ff.unicrumbs::models.created_at
+        invisible: true
+
+    updated_at:
+        label: dubk0ff.unicrumbs::models.updated_at

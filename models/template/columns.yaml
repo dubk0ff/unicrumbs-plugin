@@ -1,0 +1,24 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    id:
+        label: dubk0ff.unicrumbs::models.template.id
+        searchable: true
+
+    title:
+        label: dubk0ff.unicrumbs::models.template.title
+        type: text
+        searchable: true
+
+    is_active:
+        label: dubk0ff.unicrumbs::models.template.is_active
+        type: switch
+
+    created_at:
+        label: dubk0ff.unicrumbs::models.created_at
+        invisible: true
+
+    updated_at:
+        label: dubk0ff.unicrumbs::models.updated_at

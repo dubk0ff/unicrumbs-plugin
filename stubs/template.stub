@@ -1,0 +1,15 @@
+{# Breadcrumbs for Bootstrap 4 #}
+
+{% if crumbsList|length > 0 %}
+    <ol class="breadcrumb">
+        {% for item in crumbsList %}
+            {% if not loop.last %}
+                {# Clickable items #}
+                <li class="breadcrumb-item"><a href="{{ item.url }}">{{ item.title }}</a></li>
+            {% else %}
+                {# Last item #}
+                <li class="breadcrumb-item active">{{ item.title }}</li>
+            {% endif %}
+        {% endfor %}
+    </ol>
+{% endif %}

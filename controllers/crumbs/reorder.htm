@@ -1,0 +1,12 @@
+<?php Block::put('breadcrumb') ?>
+<ul>
+    <li><a href="<?= Backend::url('dubk0ff/unicrumbs/crumbs') ?>"><?= e(trans('dubk0ff.unicrumbs::controllers.crumbs.breadcrumb')) ?></a></li>
+    <li><?= e($this->pageTitle) ?></li>
+</ul>
+<?php Block::endPut() ?>
+
+<?= $this->makePartial('hint_information') ?>
+
+<div class="layout-row">
+    <?= $this->reorderRender() ?>
+</div>

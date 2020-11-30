@@ -1,0 +1,22 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    title:
+        label: dubk0ff.unicrumbs::models.template.title
+        type: text
+        comment: dubk0ff.unicrumbs::models.template.title_comment
+
+    is_active:
+        label: dubk0ff.unicrumbs::models.template.is_active
+        type: switch
+        default: true
+        on: dubk0ff.unicrumbs::models.template.is_active_on
+        off: dubk0ff.unicrumbs::models.template.is_active_off
+
+    code:
+        label: dubk0ff.unicrumbs::models.template.code
+        type: codeeditor
+        size: giant
+        language: twig
