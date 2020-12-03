@@ -8,7 +8,7 @@ Universal plugin for creating a list of breadcrumbs for October CMS.
 * Multi-language links (via [RainLab.Translate](https://octobercms.com/plugin/rainlab-translate)).
 * Support for static pages (via [RainLab.StaticPages](https://octobercms.com/plugin/rainlab-pages)).
 * Support for dynamic pages (CMS section).
-* Support JsonLd markup.
+* Support JSON-LD markup.
 * Automatic receipt of the integration code.
 * Additional GET requests for crumbs.
 * Full title replacement or partial substitutions.
