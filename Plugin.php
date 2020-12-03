@@ -21,7 +21,9 @@ class Plugin extends PluginBase
             'name'        => 'dubk0ff.unicrumbs::plugin.name',
             'description' => 'dubk0ff.unicrumbs::plugin.description',
             'author'      => 'Dubk0ff',
-            'icon'        => 'icon-link'
+            'icon'        => 'icon-link',
+            'iconSvg'     => 'plugins/dubk0ff/unicrumbs/assets/images/unicrumbs-icon.svg',
+            'homepage'    => 'https://github.com/dubk0ff/oc-unicrumbs-plugin'
         ];
     }
 
