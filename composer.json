@@ -1,0 +1,19 @@
+{
+    "name": "dubk0ff/unicrumbs-plugin",
+    "type": "october-plugin",
+    "description": "UniCrumbs plugin for October CMS",
+    "keywords": ["october", "octobercms", "cms"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Valentin Dubkov",
+            "email": "dubkov1401@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "composer/installers": "~1.0"
+    },
+    "minimum-stability": "dev"
+}
