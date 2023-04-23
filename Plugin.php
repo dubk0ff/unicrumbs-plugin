@@ -1,116 +1,72 @@
 <?php namespace Dubk0ff\UniCrumbs;
 
 use Backend;
-use Cms\Classes\Page;
-use Dubk0ff\UniCrumbs\Classes\Helpers\RegisterHelper;
+use Dubk0ff\UniCrumbs\Classes\Events\ClearCacheEvent;
+use Dubk0ff\UniCrumbs\Components\UniCrumbs;
 use Event;
 use System\Classes\PluginBase;
 
-/**
- * Class Plugin
- * @package Dubk0ff\UniCrumbs
- */
 class Plugin extends PluginBase
 {
-    /**
-     * @return array
-     */
-    public function pluginDetails()
+    public function pluginDetails(): array
     {
         return [
-            'name'        => 'dubk0ff.unicrumbs::plugin.name',
+            'name' => 'dubk0ff.unicrumbs::plugin.name',
             'description' => 'dubk0ff.unicrumbs::plugin.description',
-            'author'      => 'Dubk0ff',
-            'icon'        => 'icon-link',
-            'iconSvg'     => 'plugins/dubk0ff/unicrumbs/assets/images/unicrumbs-icon.svg',
-            'homepage'    => 'https://github.com/dubk0ff/oc-unicrumbs-plugin'
+            'author' => 'Dubk0ff',
+            'icon' => 'icon-link',
+            'iconSvg' => 'plugins/dubk0ff/unicrumbs/assets/images/unicrumbs-icon.svg',
+            'homepage' => 'https://github.com/dubk0ff/unicrumbs-plugin'
         ];
     }
 
-    /**
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
-        Event::listen('backend.form.extendFields', RegisterHelper::backendFormExtendFields());
-        Event::listen('cms.template.save', RegisterHelper::cmsTemplateSave());
-        Page::extend(RegisterHelper::cmsPageExtend());
+        Event::listen('cms.template.save', ClearCacheEvent::class);
     }
 
-    /**
-     * @return array
-     */
-    public function registerComponents()
+    public function registerComponents(): array
     {
         return [
-            'Dubk0ff\UniCrumbs\Components\UniCrumbs' => 'unicrumbs',
+            UniCrumbs::class => 'unicrumbs',
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function registerPermissions()
+    public function registerPermissions(): array
     {
         return [
-            'dubk0ff.unicrumbs.access.crumbs' => [
-                'tab'   => 'dubk0ff.unicrumbs::plugin.tab',
-                'label' => 'dubk0ff.unicrumbs::plugin.access.crumbs'
+            'dubk0ff.unicrumbs.crumbs' => [
+                'tab' => 'dubk0ff.unicrumbs::plugin.tab',
+                'label' => 'dubk0ff.unicrumbs::plugin.permissions.crumbs'
             ],
-            'dubk0ff.unicrumbs.access.templates' => [
-                'tab'   => 'dubk0ff.unicrumbs::plugin.tab',
-                'label' => 'dubk0ff.unicrumbs::plugin.access.templates'
-            ],
-            'dubk0ff.unicrumbs.access.settings' => [
-                'tab'   => 'dubk0ff.unicrumbs::plugin.tab',
-                'label' => 'dubk0ff.unicrumbs::plugin.access.settings'
+            'dubk0ff.unicrumbs.templates' => [
+                'tab' => 'dubk0ff.unicrumbs::plugin.tab',
+                'label' => 'dubk0ff.unicrumbs::plugin.permissions.templates'
             ]
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function registerSettings()
+    public function registerSettings(): array
     {
         return [
             'unicrumbs_crumbs' => [
-                'label'       => 'dubk0ff.unicrumbs::plugin.settings.crumbs.label',
+                'label' => 'dubk0ff.unicrumbs::plugin.settings.crumbs.label',
                 'description' => 'dubk0ff.unicrumbs::plugin.settings.crumbs.description',
-                'category'    => 'dubk0ff.unicrumbs::plugin.settings.category',
-                'icon'        => 'icon-link',
-                'url'         => Backend::url('dubk0ff/unicrumbs/crumbs'),
-                'permissions' => ['dubk0ff.unicrumbs.access.crumbs'],
-                'order'       => 500,
+                'category' => 'dubk0ff.unicrumbs::plugin.tab',
+                'icon' => 'icon-link',
+                'url' => Backend::url('dubk0ff/unicrumbs/crumbs'),
+                'permissions' => ['dubk0ff.unicrumbs.crumbs'],
+                'order' => 500,
             ],
             'unicrumbs_templates' => [
-                'label'       => 'dubk0ff.unicrumbs::plugin.settings.templates.label',
+                'label' => 'dubk0ff.unicrumbs::plugin.settings.templates.label',
                 'description' => 'dubk0ff.unicrumbs::plugin.settings.templates.description',
-                'category'    => 'dubk0ff.unicrumbs::plugin.settings.category',
-                'icon'        => 'icon-files-o',
-                'url'         => Backend::url('dubk0ff/unicrumbs/templates'),
-                'permissions' => ['dubk0ff.unicrumbs.access.templates'],
-                'order'       => 600,
-            ],
-            'unicrumbs_settings' => [
-                'label'       => 'dubk0ff.unicrumbs::plugin.settings.settings.label',
-                'description' => 'dubk0ff.unicrumbs::plugin.settings.settings.description',
-                'category'    => 'dubk0ff.unicrumbs::plugin.settings.category',
-                'icon'        => 'icon-cog',
-                'class'       => 'Dubk0ff\UniCrumbs\Models\Settings',
-                'permissions' => ['dubk0ff.unicrumbs.access.settings'],
-                'order'       => 700
+                'category' => 'dubk0ff.unicrumbs::plugin.tab',
+                'icon' => 'icon-files-o',
+                'url' => Backend::url('dubk0ff/unicrumbs/templates'),
+                'permissions' => ['dubk0ff.unicrumbs.templates'],
+                'order' => 600,
             ]
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function registerListColumnTypes()
-    {
-        return [
-            'crumb_type' => RegisterHelper::listTypeColumns()
         ];
     }
 }

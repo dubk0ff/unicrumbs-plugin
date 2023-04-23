@@ -2,24 +2,32 @@
 
 return [
     'unicrumbs' => [
-        'name' => 'List of crumbs',
-        'description' => 'Displays a list of crumbs per page.',
+        'name' => 'Breadcrumbs',
+        'description' => 'Connecting breadcrumbs to the page.',
         'properties' => [
+            'breadcrumbs' => [
+                'title' => 'Breadcrumbs',
+                'description' => 'Select the breadcrumbs to display on the page.',
+            ],
             'template' => [
                 'title' => 'Template',
-                'description' => 'Choose a template to be used for showing the crumbs.',
+                'description' => 'Select a template for displaying breadcrumbs.',
             ],
-            'jsonld' => [
+            'isJsonLd' => [
                 'title' => 'JSON-LD',
-                'description' => 'Include JSON-LD markup for the list of crumbs.',
+                'description' => 'Include JSON-LD markup for breadcrumbs.',
             ],
-            'cache' => [
+            'isCache' => [
                 'title' => 'Caching',
-                'description' => 'Cache template and list of crumbs.',
+                'description' => 'Breadcrumb and template caching.',
             ],
-            'key' => [
-                'title' => 'Key',
-                'description' => 'The unique key for the list of crumbs.',
+            'cacheTime' => [
+                'title' => 'Caching time',
+                'description' => 'Time for which the data will be cached (specified in hours).',
+            ],
+            'uuid' => [
+                'title' => 'UUID',
+                'description' => 'Unique data key.',
             ]
         ]
     ]

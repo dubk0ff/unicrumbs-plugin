@@ -7,7 +7,7 @@
 
 <?php if (!$this->fatalError): ?>
 
-    <?php if ($formModel->trashed()): ?>
+    <?php if (array_get($this->vars, 'formModel')->trashed()): ?>
         <?= $this->makePartial('hint_trashed') ?>
     <?php endif; ?>
 
@@ -30,6 +30,6 @@
 <?php else: ?>
 
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>
-    <p><a href="<?= Backend::url('dubk0ff/unicrumbs/crumbs') ?>" class="btn btn-default"><?= e(trans('dubk0ff.unicrumbs::controllers.return_to_list')) ?></a></p>
+    <p><a href="<?= Backend::url('dubk0ff/unicrumbs/crumbs') ?>" class="btn btn-default"><?= e(trans('backend::lang.form.return_to_list')) ?></a></p>
 
 <?php endif ?>

@@ -4,7 +4,7 @@
 
 scopes:
     active:
-        label: dubk0ff.unicrumbs::controllers.templates.config_filter.show_actived
+        label: dubk0ff.unicrumbs::models.template.is_active
         type: switch
         conditions:
             - is_active is not true

@@ -3,28 +3,29 @@
 # ===================================
 
 columns:
-    id:
-        label: dubk0ff.unicrumbs::models.crumb.id
-        searchable: true
-
     name:
         label: dubk0ff.unicrumbs::models.crumb.name
         type: text
         searchable: true
 
+    id:
+        label: dubk0ff.unicrumbs::models.crumb.id
+        searchable: false
+
     parent:
         label: dubk0ff.unicrumbs::models.crumb.parent
         relation: parent
         select: name
+        searchable: false
 
-    type:
+    type_info:
         label: dubk0ff.unicrumbs::models.crumb.type
-        type: crumb_type
+        type: text
+        searchable: false
 
     deleted_at:
         label: dubk0ff.unicrumbs::models.deleted_at
         default: —
-        invisible: true
 
     created_at:
         label: dubk0ff.unicrumbs::models.created_at

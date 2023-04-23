@@ -9,7 +9,7 @@ list: $/dubk0ff/unicrumbs/models/template/columns.yaml
 modelClass: Dubk0ff\UniCrumbs\Models\Template
 
 # List Title
-title: dubk0ff.unicrumbs::controllers.templates.config_list.title
+title: dubk0ff.unicrumbs::plugin.settings.templates.label
 
 # Link URL for each record
 recordUrl: dubk0ff/unicrumbs/templates/update/:id

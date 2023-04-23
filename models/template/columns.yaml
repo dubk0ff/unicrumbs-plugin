@@ -18,7 +18,6 @@ columns:
 
     created_at:
         label: dubk0ff.unicrumbs::models.created_at
-        invisible: true
 
     updated_at:
         label: dubk0ff.unicrumbs::models.updated_at

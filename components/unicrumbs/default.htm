@@ -1,7 +1,7 @@
-{% if __SELF__.property('jsonld') == true %}
+{% if __SELF__.property('isJsonLd') == true %}
     {% put styles %}
         <script type="application/ld+json">{{ __SELF__.renderJsonLd()|raw }}</script>
     {% endput %}
 {% endif %}
 
-{{ __SELF__.renderCrumbsList()|raw }}
+{{ __SELF__.renderBreadcrumbs()|raw }}

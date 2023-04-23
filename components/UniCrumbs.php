@@ -2,219 +2,162 @@
 
 use Cache;
 use Cms\Classes\ComponentBase;
-use Dubk0ff\UniCrumbs\Classes\Helpers\BaseHelper;
-use Dubk0ff\UniCrumbs\Classes\Managers\CrumbManager;
-use Dubk0ff\UniCrumbs\Classes\Managers\JsonLdManager;
+use Dubk0ff\UniCrumbs\Classes\Helpers\CacheHelper;
+use Dubk0ff\UniCrumbs\Classes\Helpers\JsonLdHelper;
+use Dubk0ff\UniCrumbs\Classes\Managers\BreadcrumbsManager;
+use Dubk0ff\UniCrumbs\Classes\Managers\ParametersManager;
 use Dubk0ff\UniCrumbs\Models\Crumb as CrumbModel;
-use Dubk0ff\UniCrumbs\Models\Settings;
 use Dubk0ff\UniCrumbs\Models\Template as TemplateModel;
-use October\Rain\Exception\ExceptionBase;
+use Ramsey\Uuid\Uuid;
 use Twig;
 
-/**
- * Class UniCrumbs
- * @package Dubk0ff\UniCrumbs\Components
- */
 class UniCrumbs extends ComponentBase
 {
-    /** @var string */
     const PARAMETERS_NAME = 'unicrumbs_parameters';
 
-    /** @var array */
-    protected $parameters = [];
+    protected string $templateCode;
 
-    /** @var array */
-    protected $baseCrumbsList = [];
+    public array $crumbsList = [];
 
-    /** @var string */
-    protected $templateCode = '';
+    public array $breadcrumbs = [];
 
-    /** @var array */
-    protected  $crumbsList = [];
+    protected array $parametersTwig = [];
 
-    /**
-     * @return array
-     */
-    public function componentDetails()
+    public function componentDetails(): array
     {
         return [
-            'name'        => 'dubk0ff.unicrumbs::components.unicrumbs.name',
+            'name' => 'dubk0ff.unicrumbs::components.unicrumbs.name',
             'description' => 'dubk0ff.unicrumbs::components.unicrumbs.description'
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function defineProperties()
+    public function defineProperties(): array
     {
         return [
+            'breadcrumbs' => [
+                'title' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.breadcrumbs.title',
+                'description' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.breadcrumbs.description',
+                'type' => 'dropdown',
+            ],
             'template' => [
-                'title'       => 'dubk0ff.unicrumbs::components.unicrumbs.properties.template.title',
+                'title' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.template.title',
                 'description' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.template.description',
-                'type'        => 'dropdown',
+                'type' => 'dropdown',
             ],
-            'jsonld' => [
-                'title'       => 'dubk0ff.unicrumbs::components.unicrumbs.properties.jsonld.title',
-                'description' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.jsonld.description',
-                'type'        => 'checkbox',
-                'default'     => false
+            'isJsonLd' => [
+                'title' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.isJsonLd.title',
+                'description' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.isJsonLd.description',
+                'type' => 'checkbox',
+                'default' => false
             ],
-            'cache' => [
-                'title'       => 'dubk0ff.unicrumbs::components.unicrumbs.properties.cache.title',
-                'description' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.cache.description',
-                'type'        => 'checkbox',
-                'default'     => false
+            'isCache' => [
+                'title' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.isCache.title',
+                'description' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.isCache.description',
+                'type' => 'checkbox',
+                'default' => false
             ],
-            'key' => [
-                'title'       => 'dubk0ff.unicrumbs::components.unicrumbs.properties.key.title',
-                'description' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.key.description',
-                'type'        => 'string',
-                'default'     => md5(str_random(16))
+            'cacheTime' => [
+                'title' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.cacheTime.title',
+                'description' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.cacheTime.description',
+                'type' => 'string',
+                'default' => 24
+            ],
+            'uuid' => [
+                'title' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.uuid.title',
+                'description' => 'dubk0ff.unicrumbs::components.unicrumbs.properties.uuid.description',
+                'type' => 'string',
+                'default' => Uuid::uuid7()
             ]
         ];
     }
 
-    /**
-    * @return void
-    */
-    public function onRender()
+    public function getBreadcrumbsOptions(): array
     {
-        if (!array_key_exists(self::PARAMETERS_NAME, $this->controller->vars)){
-            throw new ExceptionBase(sprintf(trans('dubk0ff.unicrumbs::plugin.exceptions.parameters_not_found'), self::PARAMETERS_NAME));
-        }
+        return CrumbModel::query()
+            ->lists('name', 'id');
+    }
 
-        $this->parameters = $this->controller->vars[self::PARAMETERS_NAME];
+    public function getTemplateOptions(): array
+    {
+        return TemplateModel::query()
+            ->whereIsActive(true)
+            ->lists('title', 'id');
+    }
 
-        if ($this->property('cache')) {
-            $cache = Cache::remember(BaseHelper::getCacheKey($this->property('key')), now()->hours(Settings::instance()->cache_expire), function () {
-                return (object) [
-                    'templateCode' => $this->getTemplateCode(),
-                    'baseCrumbsList' => $this->getBaseCrumbsList()
-                ];
-            });
+    public function onRender(): void
+    {
+        $this->getTemplateAndCrumbsData();
+        (new BreadcrumbsManager($this))->make();
+    }
 
-            $this->templateCode = $cache->templateCode;
-            $this->baseCrumbsList = $cache->baseCrumbsList;
+    protected function getTemplateAndCrumbsData(): void
+    {
+        if ($this->property('isCache')) {
+            [$this->templateCode, $this->crumbsList] = Cache::remember(
+                CacheHelper::getCacheKey($this->property('uuid')),
+                now()->hours($this->property('cacheTime')),
+                function () {
+                    return [
+                        $this->getTemplateCode(),
+                        $this->getCrumbsList()
+                    ];
+                });
         } else {
             $this->templateCode = $this->getTemplateCode();
-            $this->baseCrumbsList = $this->getBaseCrumbsList();
-        }
-
-        $this->createCrumbsList();
-    }
-
-    /**
-     * @return array
-     */
-    public function getTemplateOptions()
-    {
-        return TemplateModel::isActive()->get()->lists('title', 'id');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getTemplateCode()
-    {
-        return TemplateModel::isActive()->whereId((int) $this->property('template'))->firstOrFail()->code;
-    }
-
-    /**
-     * @return string
-     */
-    public function renderJsonLd()
-    {
-        return (new JsonLdManager($this->crumbsList))->render();
-    }
-
-    /**
-     * @return string
-     */
-    public function renderCrumbsList()
-    {
-        return Twig::parse($this->templateCode, ['crumbsList' => $this->crumbsList]);
-    }
-
-    /**
-     * @return \October\Rain\Database\Collection
-     */
-    protected function getBaseCrumbsList()
-    {
-        $crumb = CrumbModel::whereId((int) $this->parameters['id'])->firstOrFail();
-
-        return (new CrumbManager($crumb))->getBaseCrumbsList();
-    }
-
-    /**
-    * @return void
-    */
-    public function createCrumbsList()
-    {
-        foreach ($this->baseCrumbsList as $key => $item) {
-            if (in_array($key, $this->parameters['invisible'])) {
-                continue;
-            }
-
-            $this->crumbsList[] = [
-                'title' => $this->getCrumbTitle($item['title'], $key),
-                'url' => $this->getCrumbUrl($item['type'], $item['value'], $key)
-            ];
+            $this->crumbsList = $this->getCrumbsList();
         }
     }
 
-    /**
-     * @param string $title
-     * @param int $key
-     * @return string
-     */
-    protected function getCrumbTitle(string $title, int $key)
+    protected function getTemplateCode(): string
     {
-        if (!array_key_exists($key, $this->parameters['titles'])) {
-            return $title;
-        }
-
-        return is_array($this->parameters['titles'][$key])
-            ? sprintf($title, ...$this->parameters['titles'][$key])
-            : $this->parameters['titles'][$key];
+        return TemplateModel::query()
+            ->whereIsActive(true)
+            ->whereId($this->property('template'))
+            ->first()->code;
     }
 
-    /**
-     * @param string $type
-     * @param string $value
-     * @param string $key
-     * @return string
-     */
-    protected function getCrumbUrl(string $type, string $value, string $key)
+    protected function getCrumbsList(): array
     {
-        $localeSegment = BaseHelper::getLocaleSegment();
+        return CrumbModel::query()
+            ->whereId($this->property('breadcrumbs'))
+            ->first()
+            ->getParentsAndSelf()
+            ->mapWithKeys(function (CrumbModel $crumb) {
+                return [
+                    $crumb->id => [
+                        'title' => $crumb->title,
+                        'type' => $crumb->type,
+                        'type_value' => $crumb->type_value
+                    ]
+                ];
+            })
+            ->toArray();
+    }
 
-        switch ($type) {
-            case 'link':
-                $url = url($localeSegment . DIRECTORY_SEPARATOR . $value);
-                break;
+    public function renderJsonLd(): string
+    {
+        return JsonLdHelper::render($this->breadcrumbs);
+    }
 
-            case 'segment':
-                $url = ($lastCrumb = end($this->crumbsList))
-                    ? $lastCrumb['url'] . DIRECTORY_SEPARATOR . $value
-                    : url($localeSegment . DIRECTORY_SEPARATOR . $value);
-                break;
+    public function renderBreadcrumbs(): string
+    {
+        return Twig::parse(
+            $this->templateCode,
+            ['breadcrumbs' => $this->breadcrumbs]
+        );
+    }
 
-            case 'page':
-                $url = $this->controller->pageUrl($value, $this->parameters['slugs']);
-                break;
+    public function getParametersManager(): ParametersManager
+    {
+        return new ParametersManager(
+            array_get($this->controller->vars, self::PARAMETERS_NAME, []),
+            $this->controller->getRouter()->getParameters(),
+            $this->parametersTwig
+        );
+    }
 
-            default:
-                throw new ExceptionBase(trans('dubk0ff.unicrumbs::plugin.exceptions.unsupported_crumb_type'));
-        }
-
-        if (
-            array_key_exists($key, $this->parameters['slugs'])
-            && array_key_exists('queries', $this->parameters['slugs'][$key])
-        ) {
-            $url .= '?' . http_build_query($this->parameters['slugs'][$key]['queries']);
-        }
-
-        return $url;
+    public function setParameters(string $key, array $data): void
+    {
+        $this->parametersTwig[$key] = $data;
     }
 }

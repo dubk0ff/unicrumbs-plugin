@@ -2,20 +2,17 @@
 
 Universal plugin for creating a list of breadcrumbs for October CMS.
 
-## Benefits
+## Plugin features
 
-* Multi-language crumbs (via [RainLab.Translate](https://octobercms.com/plugin/rainlab-translate)).
-* Multi-language links (via [RainLab.Translate](https://octobercms.com/plugin/rainlab-translate)).
-* Support for static pages (via [RainLab.StaticPages](https://octobercms.com/plugin/rainlab-pages)).
+* Multi-language breadcrumbs (via [RainLab.Translate](https://octobercms.com/plugin/rainlab-translate)).
 * Support for dynamic pages (CMS section).
 * Support JSON-LD markup.
 * Automatic receipt of the integration code.
-* Additional GET requests for crumbs.
-* Full title replacement or partial substitutions.
+* Additional GET requests for breadcrumbs.
 
 # Documentation
 
-All lists of crumbs are formed in the UniCrumbs section of the site settings. To connect the list of crumbs to the desired page, you need to add the component and the code for connecting the crumbs to the `Code` section (if necessary, configure the addition of dynamic data).
+All lists of breadcrumbs are formed in the UniCrumbs section of the site settings. To connect the list of breadcrumbs to the desired page, you need to add a component and a connection code (if necessary, set up adding dynamic data).
 
 ## Attention!
 
@@ -30,129 +27,141 @@ Using the Laravel’s CLI is the fastest way to get started. Just run the follow
 php artisan plugin:install Dubk0ff.UniCrumbs
 ```
 
-Adding crumbs is done 1 time automatically (if there are no crumbs), or manually through the add form.
+Breadcrumbs are of three types:
+* `Static` - crumb with a relative link.
+* `Segment` - crumb with a link segment. The segment will be added to the link of the previous breadcrumb. If it is missing, a relative link will be created.
+* `CMS` - crumb pointing to the CMS section page to get the link.
 
-There are three types of crumbs:
-* `Статические` - crumbs with a static title and a relative link.
-* `Статические +` - crumbs with a static title and link segment. The segment will be added to the link of the previous crumb; if it is absent, a relative link will be created.
-* `CMS` - crumbs for which the page from the CMS section is set (to get the crumb title and link).
-
-At least one template is required to render the list of crumbs.
-
-> To use multi-language, you need to install the plugin [RainLab.Translate](https://octobercms.com/plugin/rainlab-translate)
+At least one template is required to display the list of breadcrumbs.
 
 ## Titles
 
-In the CMS page section, it is recommended to fill in the `Сrumb title` field before importing pages.
-
-> This action is optional, since the crumb title can be filled (overridden) dynamically in the `Code` section
-
-For static pages:
+For static headers:
 
 ```
-My most optimized crumb title!
+My home page!
 ```
 
-For dynamic pages:
+For dynamic headers:
 
 ```
-My %s dynamic crumb title - %s
+My %s page!
 ```
 
-The specified `%s` specifiers will not be replaced when rendering the crumb (the number of specifiers must match the number of parameters). The replacement is indicated for a specific crumb in the `titles` data array by its ID:
+The specified `%s` specifiers will be replaced when displaying breadcrumbs (the number of specifiers must match the number of parameters).
+The data is indicated for a specific bread shop by its ID:
 
 ```
 'titles' => [
-    30 => [
-        'param_title',
-        'param_title'
+    11 => [
+        'home'
     ]
 ]
 ```
 
-Any crumb title can be replaced in the `Code` section:
+To completely replace the header, you can pass a string with the ID of the breadcrumb:
 
 ```
 'titles' => [
-    31 => 'My NEW crumb title!'
+    11 => 'Replace - My home page!'
 ]
 ```
 
 ## Links
 
-UniCrumbs plugin can automatically recognize dynamic pages in the CMS section and the necessary parameters for them.
+The UniCrumbs plugin can automatically recognize dynamic pages in the CMS section and the necessary parameters for them.
 
-Therefore, to get a link, you must specify them in the data array `slugs` by its ID:
+Setting dynamic data to get a link is done in the `slugs` array by its ID:
 
 ```
 'slugs' => [
-    30 => [
-        'post' => 'your_url_slug',
-        // Additional GET parameters
-        'queries' => []
+    11 => [
+        'post' => '$this->param('post_slug')'
     ]
 ]
 ```
 
-For each crumb there is a `queries` parameter in which you can specify additional GET parameters:
+## URL query parameters
+
+You may need to add additional GET parameters for links in some cases:
 
 ```
 // Additional GET parameters
 'queries' => [
-    'date' => '25012020',
-    'status' => 'new',
-    'category' => 'top-news'
+    11 => [
+        'status' => 'new',
+        'color' => 'red'
+    ]
 ]
 ```
 
 ## Invisible
 
-Perhaps in some cases you will need to hide one or several crumbs from the list. To do this, you need to add the ID of these crumbs to the `invisible` array:
+To hide one or more breadcrumbs, add the necessary IDs to the `invisible` array.
 
 ```
 // IDs of crumbs to hide
-'invisible' => [30, 32]
+'invisible' => [8, 13]
 ```
 
-## Example
+# Example
 
-`Crumb ID` - this is the final crumb from which the list of child crumb will be obtained.
+An example of connecting breadcrumbs to the village.
+
+## Code
+
+If there is no dynamic data, the connection code can be ignored.
 
 ```
 function onEnd()
 {
-    /* Array of UniCrumbs parameters */
+    /* UniCrumbs connection parameters */
     $this['unicrumbs_parameters'] = [
-        // Crumb ID
-        'id' => 31,
-        // Dynamic titles and parameters of cms pages
+        // Dynamic titles parameters
         'titles' => [
-            30 => [
-                'param_title',
-                'param_title',
-            ],
-            31 => 'My NEW crumb title!'
+            11 => [
+                'home'
+            ]
         ],
-        // Dynamic slugs and GET queries of cms pages
+        // Dynamic slugs parameters
         'slugs' => [
-            30 => [
-                'post' => 'your_url_slug',
-                // Additional GET parameters
-                'queries' => [
-                    'date' => '25012020',
-                    'status' => 'new',
-                    'category' => 'top-news'
-                ]
-            ],
+            11 => [
+                'post' => '$this->param('post_slug')'
+            ]
         ],
-        // IDs of crumbs to hide
-        'invisible' => [29, 32]
+        // URL query parameters
+        'queries' => [
+            11 => [
+                'status' => 'new',
+                'color' => 'red'
+            ]
+        ],
+        // Hide IDs breadcrumbs
+        'invisible' => [8, 13]
     ];
 }
 ```
 
-For all the crumbs involved in the example (29, 30, 31, 32), you can apply the settings above.
+## Twig
 
-## Information
+```
+[unicrumbs]
+breadcrumbs = 11
+template = 1
+isJsonLd = 1
+isCache = 1
+cacheTime = 24
+uuid = "01878a05-f536-70b5-9889-f02e9ec285bd"
+```
+
+Passing data to the config can be done in the `twig` template before displaying the breadcrumbs.
+
+```
+{{ unicrumbs.setParameters('titles', {11: blogPost.title}) }}
+
+{% component "unicrumbs" %}
+```
+
+# Information
 
 If you are interested in improving this plugin, please submit bug reports and feature requests on the plugin GitHub page.

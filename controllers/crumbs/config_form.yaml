@@ -3,7 +3,7 @@
 # ===================================
 
 # Record name
-name: dubk0ff.unicrumbs::controllers.crumbs.config_form.name
+name: dubk0ff.unicrumbs::controllers.crumbs.name
 
 # Model Form Field configuration
 form: $/dubk0ff/unicrumbs/models/crumb/fields.yaml
@@ -16,15 +16,21 @@ defaultRedirect: dubk0ff/unicrumbs/crumbs
 
 # Create page
 create:
-    title: dubk0ff.unicrumbs::controllers.crumbs.config_form.create_title
+    title: backend::lang.form.create_title
     redirect: dubk0ff/unicrumbs/crumbs/update/:id
     redirectClose: dubk0ff/unicrumbs/crumbs/preview/:id
 
 # Update page
 update:
-    title: dubk0ff.unicrumbs::controllers.crumbs.config_form.update_title
+    title: backend::lang.form.update_title
+    redirect: dubk0ff/unicrumbs/crumbs
     redirectClose: dubk0ff/unicrumbs/crumbs/preview/:id
 
 # Preview page
 preview:
-    title: dubk0ff.unicrumbs::controllers.crumbs.config_form.preview_title
+    title: backend::lang.form.preview_title
+
+customMessages:
+    flashCreate: dubk0ff.unicrumbs::controllers.crumbs.flash_create
+    flashUpdate: dubk0ff.unicrumbs::controllers.crumbs.flash_update
+    flashDelete: dubk0ff.unicrumbs::controllers.crumbs.flash_delete

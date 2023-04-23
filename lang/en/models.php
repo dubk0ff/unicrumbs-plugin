@@ -3,38 +3,39 @@
 return [
     'crumb' => [
         'id' => 'ID',
-        'name' => 'Crumb name',
+        'name' => 'Name',
+        'name_placeholder' => 'Main page',
         'parent' => 'Parent',
-        'parent_placeholder' => '-- select parent --',
-        'type' => 'Data type',
-        'type_placeholder' => '-- choose a method of obtaining data --',
-        'code' => 'Crumbs list connection code',
+        'parent_placeholder' => '-- choose a parent crumb --',
         'title' => 'Title',
         'title_placeholder' => 'Home',
-        'link' => 'Relative link',
-        'segment' => 'Link segment',
-        'page' => 'Page',
-        'page_placeholder' => '-- select page --',
+        'title_comment' => 'May contain <strong>%s</strong> conversion specifiers that will be replaced with dynamic data.',
+        'type' => 'Link type',
+        'type_placeholder' => '-- select a link type --',
+        'type_options' => [
+            'static' => 'Static',
+            'segment' => 'Segment',
+            'cms' => 'CMS'
+        ],
+        'type_value' => 'Value',
+        'path_placeholder' => 'users',
+        'cms_placeholder' => '-- select page --',
+        'code' => 'Breadcrumbs connection code',
+        'code_comment' => '<span class="text-primary">If there is no dynamic data, the connection code can be ignored.</span>',
         'hint_information' => [
-            'Attention!',
+            '<strong>Attention!</strong>',
             'The code for connecting breadcrumbs directly depends on the parent elements.',
-            'Therefore, after changing the order of the elements, it can significantly change!'
+            'Therefore, after changing the order of elements, it can change significantly!'
         ]
     ],
     'template' => [
         'id' => 'ID',
         'title' => 'Title',
-        'title_comment' => 'Brief description of the template',
+        'title_placeholder' => 'Main template',
         'code' => 'Template code',
-        'is_active' => 'Active template',
-        'is_active_on' => 'Yes',
-        'is_active_off' => 'No'
+        'is_active' => 'Active'
     ],
-    'settings' => [
-        'cache_expire' => 'Cache expire',
-        'cache_expire_comment' => 'The number of minutes for which the crumbs and the template for the page will be cached'
-    ],
-    'deleted_at' => 'Delete',
-    'created_at' => 'Create',
-    'updated_at' => 'Update'
+    'created_at' => 'Creation',
+    'updated_at' => 'Update',
+    'deleted_at' => 'Removal'
 ];

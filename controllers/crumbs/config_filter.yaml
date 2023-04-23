@@ -4,13 +4,13 @@
 
 scopes:
     type:
-        label: dubk0ff.unicrumbs::controllers.crumbs.config_filter.type
+        label: dubk0ff.unicrumbs::models.crumb.type
         modelClass: Dubk0ff\UniCrumbs\Models\Crumb
         options: getTypeOptions
         conditions: type in (:filtered)
 
     deleted:
-        label: dubk0ff.unicrumbs::controllers.crumbs.config_filter.show_deleted
+        label: dubk0ff.unicrumbs::models.deleted_at
         type: switch
         conditions:
             - deleted_at is null

@@ -1,33 +1,24 @@
 <?php namespace Dubk0ff\UniCrumbs\Controllers;
 
+use Backend\Behaviors\FormController;
+use Backend\Behaviors\ListController;
 use BackendMenu;
 use Backend\Classes\Controller;
 use System\Classes\SettingsManager;
 
-/**
- * Class Templates
- * @package Dubk0ff\UniCrumbs\Controllers
- */
 class Templates extends Controller
 {
-    /** @var array */
     public $implement = [
-        \Backend\Behaviors\FormController::class,
-        \Backend\Behaviors\ListController::class
+        FormController::class,
+        ListController::class,
     ];
 
-    /** @var string */
-    public $formConfig = 'config_form.yaml';
+    public string $formConfig = 'config_form.yaml';
 
-    /** @var string */
-    public $listConfig = 'config_list.yaml';
+    public string $listConfig = 'config_list.yaml';
 
-    /** @var array */
-    public $requiredPermissions = ['dubk0ff.unicrumbs.access.templates'];
+    protected $requiredPermissions = ['dubk0ff.unicrumbs.templates'];
 
-    /**
-     * Templates constructor.
-     */
     public function __construct()
     {
         parent::__construct();

@@ -1,15 +1,17 @@
-{# Breadcrumbs for Bootstrap 4 #}
+{# Breadcrumbs for Bootstrap 5 #}
 
-{% if crumbsList|length > 0 %}
+{% if breadcrumbs|length > 0 %}
+<nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        {% for item in crumbsList %}
+        {% for item in breadcrumbs %}
             {% if not loop.last %}
                 {# Clickable items #}
                 <li class="breadcrumb-item"><a href="{{ item.url }}">{{ item.title }}</a></li>
             {% else %}
                 {# Last item #}
-                <li class="breadcrumb-item active">{{ item.title }}</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ item.title }}</li>
             {% endif %}
         {% endfor %}
     </ol>
+</nav>
 {% endif %}

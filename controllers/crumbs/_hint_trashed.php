@@ -1,7 +1,6 @@
 <div class="layout-row min-size">
-    <div class="callout callout-danger">
+    <div class="callout callout-danger no-icon">
         <div class="header">
-            <i class="icon-trash"></i>
             <h3><?= e(trans('dubk0ff.unicrumbs::controllers.hint_trashed.title')) ?></h3>
             <p><?= e(trans('dubk0ff.unicrumbs::controllers.hint_trashed.message')) ?></p>
         </div>

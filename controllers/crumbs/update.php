@@ -9,7 +9,7 @@
 
     <?= Form::open(['class' => 'layout']) ?>
 
-        <?php if ($formModel->trashed()): ?>
+        <?php if (array_get($this->vars, 'formModel')->trashed()): ?>
             <?= $this->makePartial('hint_trashed') ?>
         <?php endif; ?>
 
@@ -24,42 +24,42 @@
                     data-request="onSave"
                     data-request-data="redirect:0"
                     data-hotkey="ctrl+s, cmd+s"
-                    data-load-indicator="<?= e(trans('dubk0ff.unicrumbs::controllers.save_indicator')) ?>"
+                    data-load-indicator="<?= e(trans('backend::lang.form.saving_name', ['name'=>$formRecordName])) ?>"
                     class="btn btn-primary">
-                    <?= e(trans('dubk0ff.unicrumbs::controllers.save')) ?>
+                    <?= e(trans('backend::lang.form.save')) ?>
                 </button>
                 <button
                     type="button"
                     data-request="onSave"
                     data-request-data="close:1"
                     data-hotkey="ctrl+enter, cmd+enter"
-                    data-load-indicator="<?= e(trans('dubk0ff.unicrumbs::controllers.save_and_close_indicator')) ?>"
+                    data-load-indicator="<?= e(trans('backend::lang.form.saving_name', ['name'=>$formRecordName])) ?>"
                     class="btn btn-default">
-                    <?= e(trans('dubk0ff.unicrumbs::controllers.save_and_close')) ?>
+                    <?= e(trans('backend::lang.form.save_and_close')) ?>
                 </button>
 
-                <?php if ($formModel->trashed()): ?>
+                <?php if (array_get($this->vars, 'formModel')->trashed()): ?>
                     <button
                         type="button"
                         data-request="onRestoreCrumb"
-                        data-load-indicator="<?= e(trans('dubk0ff.unicrumbs::controllers.restore_indicator')) ?>"
+                        data-load-indicator="<?= e(trans('backend::lang.form.restoring')) ?>"
                         class="btn btn-outline-success oc-icon-heartbeat"
-                        data-request-confirm="<?= e(trans('dubk0ff.unicrumbs::controllers.restore_confirm')) ?>">
-                        <?= e(trans('dubk0ff.unicrumbs::controllers.restore')) ?>
+                        data-request-confirm="<?= e(trans('backend::lang.form.confirm_restore')) ?>">
+                        <?= e(trans('backend::lang.form.restore')) ?>
                     </button>
                 <?php else: ?>
                     <button
                         type="button"
                         data-request="onDeleteCrumb"
-                        data-load-indicator="<?= e(trans('dubk0ff.unicrumbs::controllers.delete_indicator')) ?>"
+                        data-load-indicator="<?= e(trans('backend::lang.form.deleting')) ?>"
                         class="btn btn-outline-danger oc-icon-trash-o"
-                        data-request-confirm="<?= e(trans('dubk0ff.unicrumbs::controllers.delete_confirm')) ?>">
-                        <?= e(trans('dubk0ff.unicrumbs::controllers.delete')) ?>
+                        data-request-confirm="<?= e(trans('backend::lang.form.confirm_delete')) ?>">
+                        <?= e(trans('backend::lang.form.delete')) ?>
                     </button>
                 <?php endif ?>
 
                 <span class="btn-text">
-                    <?= e(trans('dubk0ff.unicrumbs::controllers.or')) ?> <a href="<?= Backend::url('dubk0ff/unicrumbs/crumbs') ?>"><?= e(trans('dubk0ff.unicrumbs::controllers.cancel')) ?></a>
+                    <?= e(trans('backend::lang.form.or')) ?> <a href="<?= Backend::url('dubk0ff/unicrumbs/crumbs') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
                 </span>
             </div>
         </div>
@@ -69,6 +69,6 @@
 <?php else: ?>
 
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>
-    <p><a href="<?= Backend::url('dubk0ff/unicrumbs/crumbs') ?>" class="btn btn-default"><?= e(trans('dubk0ff.unicrumbs::controllers.return_to_list')) ?></a></p>
+    <p><a href="<?= Backend::url('dubk0ff/unicrumbs/crumbs') ?>" class="btn btn-default"><?= e(trans('backend::lang.form.return_to_list')) ?></a></p>
 
 <?php endif ?>

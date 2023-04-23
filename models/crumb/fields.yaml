@@ -7,7 +7,8 @@ fields:
         label: dubk0ff.unicrumbs::models.crumb.name
         span: left
         type: text
-        context: [create, update]
+        placeholder: dubk0ff.unicrumbs::models.crumb.name_placeholder
+        context: [ create, update ]
 
     parent:
         label: dubk0ff.unicrumbs::models.crumb.parent
@@ -15,58 +16,54 @@ fields:
         type: relation
         nameFrom: name
         placeholder: dubk0ff.unicrumbs::models.crumb.parent_placeholder
-        context: [create, update]
+        context: [ create, update ]
 
-    type:
-        label: dubk0ff.unicrumbs::models.crumb.type
-        span: full
-        type: dropdown
-        placeholder: dubk0ff.unicrumbs::models.crumb.type_placeholder
-        context: [create, update]
+    title:
+        label: dubk0ff.unicrumbs::models.crumb.title
+        type: text
+        required: true
+        placeholder: dubk0ff.unicrumbs::models.crumb.title_placeholder
+        comment: dubk0ff.unicrumbs::models.crumb.title_comment
+        commentHtml: true
+        context: [ create, update ]
 
     _information:
         type: partial
-        path: $/dubk0ff/unicrumbs/controllers/crumbs/_hint_information.htm
-        context: [preview]
+        path: $/dubk0ff/unicrumbs/controllers/crumbs/_hint_information.php
+        context: [ preview ]
 
     _code:
         label: dubk0ff.unicrumbs::models.crumb.code
         type: codeeditor
         size: giant
         language: php
-        context: [preview]
+        commentAbove: dubk0ff.unicrumbs::models.crumb.code_comment
+        commentHtml: true
+        context: [ preview ]
 
-    page:
-        label: dubk0ff.unicrumbs::models.crumb.page
+    type:
+        label: dubk0ff.unicrumbs::models.crumb.type
+        span: left
+        type: dropdown
+        placeholder: dubk0ff.unicrumbs::models.crumb.type_placeholder
+        context: [ create, update ]
+
+    _path:
+        label: dubk0ff.unicrumbs::models.crumb.type_value
+        span: right
+        type: text
+        required: true
+        placeholder: dubk0ff.unicrumbs::models.crumb.path_placeholder
+        context: [ create, update ]
+        dependsOn: type
+
+    _cms:
+        label: dubk0ff.unicrumbs::models.crumb.type_value
+        span: right
         type: dropdown
         required: true
-        placeholder: dubk0ff.unicrumbs::models.crumb.page_placeholder
-        context: [create, update]
+        placeholder: dubk0ff.unicrumbs::models.crumb.cms_placeholder
+        context: [ create, update ]
         dependsOn: type
 
-    title:
-        label: dubk0ff.unicrumbs::models.crumb.title
-        span: left
-        type: text
-        required: true
-        placeholder: dubk0ff.unicrumbs::models.crumb.title_placeholder
-        context: [create, update]
-        dependsOn: type
 
-    link:
-        label: dubk0ff.unicrumbs::models.crumb.link
-        span: right
-        type: text
-        required: true
-        placeholder: /
-        context: [create, update]
-        dependsOn: type
-
-    segment:
-        label: dubk0ff.unicrumbs::models.crumb.segment
-        span: right
-        type: text
-        required: true
-        placeholder: users
-        context: [create, update]
-        dependsOn: type

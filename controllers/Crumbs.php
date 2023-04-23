@@ -1,42 +1,31 @@
 <?php namespace Dubk0ff\UniCrumbs\Controllers;
 
+use Backend\Behaviors\FormController;
+use Backend\Behaviors\ListController;
 use BackendMenu;
 use Backend\Classes\Controller;
-use Dubk0ff\UniCrumbs\Classes\Managers\CrumbManager;
-use Dubk0ff\UniCrumbs\Models\Crumb;
+use Dubk0ff\UniCrumbs\Classes\Actions\DeleteCrumbAction;
+use Dubk0ff\UniCrumbs\Classes\Actions\ImportCrumbsAction;
+use Dubk0ff\UniCrumbs\Classes\Actions\RestoreCrumbAction;
 use Dubk0ff\UniCrumbs\Models\Crumb as CrumbModel;
-use Flash;
-use System\Classes\SettingsManager;
+use Illuminate\Http\RedirectResponse;
+use October\Rain\Database\Builder;
 use Redirect;
+use System\Classes\SettingsManager;
 
-/**
- * Class Crumbs
- * @package Dubk0ff\UniCrumbs\Controllers
- */
 class Crumbs extends Controller
 {
-    /** @var array */
     public $implement = [
-        \Backend\Behaviors\FormController::class,
-        \Backend\Behaviors\ListController::class,
-        \Backend\Behaviors\ReorderController::class
+        FormController::class,
+        ListController::class,
     ];
 
-    /** @var string */
-    public $formConfig = 'config_form.yaml';
+    public string $formConfig = 'config_form.yaml';
 
-    /** @var string */
-    public $listConfig = 'config_list.yaml';
+    public string $listConfig = 'config_list.yaml';
 
-    /** @var string */
-    public $reorderConfig = 'config_reorder.yaml';
+    protected $requiredPermissions = ['dubk0ff.unicrumbs.crumbs'];
 
-    /** @var array */
-    public $requiredPermissions = ['dubk0ff.unicrumbs.access.crumbs'];
-
-    /**
-     * Crumbs constructor.
-     */
     public function __construct()
     {
         parent::__construct();
@@ -45,113 +34,38 @@ class Crumbs extends Controller
         SettingsManager::setContext('Dubk0ff.UniCrumbs', 'unicrumbs_crumbs');
     }
 
-    /**
-    * @return void
-    */
-    public function index()
+    public function isShowImportButton(): bool
     {
-        $this->params['isShowImportButton'] = CrumbManager::isShowImportButton();
-        $this->addJs('/plugins/dubk0ff/unicrumbs/assets/js/bulk-actions.js');
-        $this->asExtension('ListController')->index();
+        return CrumbModel::count() === 0;
     }
 
-    /***** EXTENDS *****/
-
-    /**
-     * @param $query
-     */
-    public function formExtendQuery($query)
+    public function formExtendQuery(Builder $query): void
     {
         $query->withTrashed();
     }
 
-    /**
-     * @param $query
-     */
-    public function listExtendQuery($query)
+    public function listExtendQuery(Builder $query): void
     {
         $query->withTrashed();
     }
 
-    /**
-     * @param $query
-     */
-    public function reorderExtendQuery($query)
+    public function index_onImportPages(): RedirectResponse
     {
-        $query->withTrashed();
-    }
-
-    /***** AJAX REQUESTS *****/
-
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function index_onImportPages()
-    {
-        CrumbManager::importCmsPages();
-        Flash::success(trans('dubk0ff.unicrumbs::controllers.messages.import_pages_success'));
+        app(ImportCrumbsAction::class)->run();
 
         return Redirect::refresh();
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function index_onBulkAction()
+    public function onDeleteCrumb(int $id): RedirectResponse
     {
-        if (
-            ($bulkAction = request()->post('action'))
-            && ($checkedIds = request()->post('checked'))
-            && is_array($checkedIds)
-            && count($checkedIds)
-        ) {
-            foreach ($checkedIds as $id) {
-                if (!$crumb = CrumbModel::withTrashed()->whereId($id)->first()) {
-                    continue;
-                }
-
-                switch ($bulkAction) {
-                    case 'soft-delete':
-                        $crumb->delete();
-                        break;
-
-                    case 'restore':
-                        $crumb->restore();
-                        break;
-
-                    case 'delete':
-                        $crumb->forceDelete();
-                        break;
-                }
-            }
-            Flash::success(trans('dubk0ff.unicrumbs::controllers.messages.bulk_action_success'));
-        } else {
-            Flash::error(trans('dubk0ff.unicrumbs::controllers.messages.bulk_action_error'));
-        }
+        app(DeleteCrumbAction::class)->run($id);
 
         return Redirect::refresh();
     }
 
-    /**
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function onDeleteCrumb(int $id)
+    public function onRestoreCrumb(int $id): RedirectResponse
     {
-        CrumbModel::whereId($id)->firstOrFail()->delete();
-        Flash::success(trans('dubk0ff.unicrumbs::controllers.messages.delete_success'));
-
-        return Redirect::refresh();
-    }
-
-    /**
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function onRestoreCrumb(int $id)
-    {
-        CrumbModel::withTrashed()->whereId($id)->firstOrFail()->restore();
-        Flash::success(trans('dubk0ff.unicrumbs::controllers.messages.restore_success'));
+        app(RestoreCrumbAction::class)->run($id);
 
         return Redirect::refresh();
     }

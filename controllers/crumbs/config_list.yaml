@@ -9,7 +9,7 @@ list: $/dubk0ff/unicrumbs/models/crumb/columns.yaml
 modelClass: Dubk0ff\UniCrumbs\Models\Crumb
 
 # List Title
-title: dubk0ff.unicrumbs::controllers.crumbs.config_list.title
+title: dubk0ff.unicrumbs::plugin.settings.crumbs.label
 
 # Link URL for each record
 recordUrl: dubk0ff/unicrumbs/crumbs/preview/:id
@@ -39,6 +39,11 @@ showSorting: true
 
 # Display checkboxes next to each record
 showCheckboxes: true
+
+structure:
+    showTree: true
+    showReorder: true
+    showSorting: false
 
 # Toolbar widget configuration
 toolbar:

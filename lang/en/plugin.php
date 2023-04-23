@@ -1,37 +1,21 @@
 <?php
 
 return [
-    'name' => 'Universal crumb manager',
-    'description' => 'Setting up and managing crumbs on site pages.',
+    'name' => 'Universal breadcrumbs.',
+    'description' => 'Manage breadcrumbs on site pages.',
     'tab' => 'UniCrumbs',
-    'access' => [
-        'crumbs' => 'Crumb management',
-        'templates' => 'Managing display templates',
-        'settings' => 'Manage plugin settings'
+    'permissions' => [
+        'crumbs' => 'Breadcrumb management',
+        'templates' => 'Template management'
     ],
     'settings' => [
-        'category' => 'UniCrumbs',
         'crumbs' => [
-            'label' => 'Crumbs',
-            'description' => 'Crumbs management section.'
+            'label' => 'Breadcrumbs',
+            'description' => 'Breadcrumb management.'
         ],
         'templates' => [
             'label' => 'Templates',
-            'description' => 'Section for managing display templates.'
-        ],
-        'settings' => [
-            'label' => 'Settings',
-            'description' => 'Crumbs manager settings.'
+            'description' => 'Display template management.'
         ]
-    ],
-    'types' => [
-        'static'        => 'Static',
-        'static_plus'   => 'Static +',
-        'cms'           => 'CMS'
-    ],
-    'exceptions' => [
-        'parameters_not_found' => 'The variable `%s` is not set, or is set incorrectly!',
-        'unsupported_crumb_type' => 'Error! Type of crumbs not supported.',
-        'stub_not_found' => 'Stub file with key `%s` not found!'
     ]
 ];
