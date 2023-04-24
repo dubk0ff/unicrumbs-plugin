@@ -6,3 +6,5 @@
 2.0.1:
     - Update UniCrumbs plugin.
     - 2_0_1_update_table.php
+2.0.2:
+    - Cache clearing bug fix.
